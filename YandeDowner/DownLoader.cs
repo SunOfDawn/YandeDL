@@ -10,9 +10,11 @@ namespace YandeDowner
     {
         static int max_thread = 10;
         static string post = "https://yande.re/post";
+        List<ManualResetEvent> manualEvents = new List<ManualResetEvent>();
 
         public void downLoad(string savePath, string key_word, int start, int end)
         {
+            ThreadPool.SetMaxThreads(max_thread, max_thread);
             for (int i = start; i <= end; i++)
             {
                 Console.WriteLine("Loading page data: " + i + "/" + end);
@@ -29,9 +31,6 @@ namespace YandeDowner
             string regstr = "jpeg_url:((https|http|ftp|rtsp|mms)?:\\/\\/)[^\\s]+.jpg";
             Regex reg = new Regex(regstr, RegexOptions.IgnoreCase | RegexOptions.Singleline);
             MatchCollection mc = reg.Matches(validHtml);
-
-            List<ManualResetEvent> manualEvents = new List<ManualResetEvent>();
-            ThreadPool.SetMaxThreads(max_thread, max_thread);
 
             string imageUrl;
             string fileName;
